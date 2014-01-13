@@ -1,8 +1,9 @@
-var makeTree = function(value){
+var makeTree = function(value, parent){
   var newTree = {};
   _.extend(newTree, treeMethods);
   newTree.value = value;
   newTree.children = undefined;
+  newTree.parent = parent;
   return newTree;
 };
 
@@ -10,7 +11,7 @@ var treeMethods = {};
 
 treeMethods.addChild = function(value){
   this.children = this.children || [];
-  this.children.push( makeTree(value) );
+  this.children.push( makeTree(value, this) );
 };
 
 treeMethods.contains = function(target){
@@ -24,4 +25,11 @@ treeMethods.contains = function(target){
   }
   return false;
 };
+
+treeMethods.removeFromParent = function() {
+  if (this.parent) {
+    this.parent.children.splice(this.parent.children.indexOf( this ), 1);
+  }
+  this.parent = null;
+}
 

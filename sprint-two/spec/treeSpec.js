@@ -44,4 +44,38 @@ describe("tree", function() {
     assert.isTrue(tree.contains(8));
   });
 
+  it("should correctly set the parent", function() {
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].addChild(10);
+    expect(tree.children[0].parent).to.equal(tree);
+  });
+
+  it("should be able to remove child from parent", function() {
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].removeFromParent();
+    assert.isFalse(tree.contains(5));
+  });
+
+    it("should remove grandchildren when child removed", function() {
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].addChild(10);
+    tree.children[0].removeFromParent();
+    assert.isFalse(tree.contains(10));
+    assert.isFalse(tree.contains(5));
+  });
+
+  it("should not remove other children from tree", function() {
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.addChild(7);
+    tree.children[0].addChild(10);
+    tree.children[0].removeFromParent();
+    assert.isFalse(tree.contains(10));
+    assert.isFalse(tree.contains(5));
+    assert.isTrue(tree.contains(6));
+    assert.isTrue(tree.contains(7));
+  });
 });
